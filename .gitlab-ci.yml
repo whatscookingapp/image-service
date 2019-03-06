@@ -1,0 +1,24 @@
+image: swift:4.2
+
+stages:
+  - test
+  - deploy
+
+cache:
+  key: "$CI_BUILD_REF_NAME-$CI_COMMIT_REF_NAME"
+  paths:
+    - .build
+
+variables:
+  MAILGUN_API_KEY: test
+  MAILGUN_DOMAIN: mg.movievalley.com
+  SENDER: MovieValley <info@movievalley.com>
+
+test:
+  stage: test
+  script:
+    - swift package resolve
+    - swift package clean
+    - swift test
+  tags:
+    - docker
