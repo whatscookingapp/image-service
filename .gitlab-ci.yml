@@ -1,7 +1,6 @@
-image: swift:4.2
-
 stages:
   - test
+  - tag
   - deploy
 
 cache:
@@ -9,16 +8,51 @@ cache:
   paths:
     - .build
 
-variables:
-  MAILGUN_API_KEY: test
-  MAILGUN_DOMAIN: mg.movievalley.com
-  SENDER: MovieValley <info@movievalley.com>
-
 test:
   stage: test
+  image: swift:4.2
+  variables:
+    MAILGUN_API_KEY: test
+    MAILGUN_DOMAIN: mg.movievalley.com
+    SENDER: MovieValley <info@movievalley.com>
+  services:
+    - postgres
   script:
     - swift package resolve
     - swift package clean
     - swift test
   tags:
     - docker
+
+docker:image:
+  stage: tag
+  image: docker:1.11
+  only:
+    - master
+  services:
+    - docker:dind
+  script:
+    - docker version
+    - docker login -u gitlab-ci-token -p $CI_BUILD_TOKEN $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE:latest .
+    - docker push $CI_REGISTRY_IMAGE:latest
+
+deploy-test:
+  stage: deploy
+  when: manual
+  environment:
+    name: test
+    url: movievalley.com
+  before_script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    # Setup SSH deploy keys
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e MAILGUN_API_KEY=$MAILGUN_API_KEY -e MAILGUN_DOMAIN=$MAILGUN_DOMAIN -e SENDER=$SENDER --net=internal $CI_REGISTRY_IMAGE && exit"
+  only:
+    - master
