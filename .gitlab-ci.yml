@@ -15,8 +15,6 @@ test:
     MAILGUN_API_KEY: test
     MAILGUN_DOMAIN: mg.movievalley.com
     SENDER: MovieValley <info@movievalley.com>
-  services:
-    - postgres
   script:
     - swift package resolve
     - swift package clean
@@ -53,6 +51,6 @@ deploy-test:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e MAILGUN_API_KEY=$MAILGUN_API_KEY -e MAILGUN_DOMAIN=$MAILGUN_DOMAIN -e SENDER=$SENDER --net=internal $CI_REGISTRY_IMAGE && exit"
+    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e MAILGUN_API_KEY='$MAILGUN_API_KEY' -e MAILGUN_DOMAIN='$MAILGUN_DOMAIN' -e SENDER='$SENDER' --net=internal $CI_REGISTRY_IMAGE && exit"
   only:
     - master
