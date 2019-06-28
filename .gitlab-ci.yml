@@ -16,6 +16,7 @@ test:
     MAILGUN_DOMAIN: mg.movievalley.com
     SENDER: MovieValley <info@movievalley.com>
   script:
+    - apt-get -qq update && apt-get install -y libssl-dev
     - swift package resolve
     - swift package clean
     - swift test
