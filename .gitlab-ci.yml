@@ -10,7 +10,7 @@ cache:
 
 test:
   stage: test
-  image: swift:4.2
+  image: swift:5.0
   variables:
     MAILGUN_API_KEY: test
     MAILGUN_DOMAIN: mg.movievalley.com
