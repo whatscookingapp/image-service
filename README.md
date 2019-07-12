@@ -1,9 +1,9 @@
-# MailService
+# PushService
 
 ### Routes
 ```
 +------+---------+
-| POST | /mail   |
+| POST | /push   |
 +------+---------+
 | GET  | /status |
 +------+---------+
