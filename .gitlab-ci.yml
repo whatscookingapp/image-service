@@ -40,7 +40,7 @@ deploy-test:
   when: manual
   environment:
     name: test
-    url: movievalley.com
+    url: whatscookin.com
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
@@ -51,6 +51,6 @@ deploy-test:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e MAILGUN_API_KEY='$MAILGUN_API_KEY' -e MAILGUN_DOMAIN='$MAILGUN_DOMAIN' -e SENDER='$SENDER' --net=internal $CI_REGISTRY_IMAGE && exit"
+    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e ONESIGNAL_API_KEY='$ONESIGNAL_API_KEY' -e ONESIGNAL_APP_ID='$ONESIGNAL_APP_ID --net=internal $CI_REGISTRY_IMAGE && exit"
   only:
     - master
