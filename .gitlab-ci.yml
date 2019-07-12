@@ -12,9 +12,8 @@ test:
   stage: test
   image: swift:5.0
   variables:
-    MAILGUN_API_KEY: test
-    MAILGUN_DOMAIN: mg.movievalley.com
-    SENDER: MovieValley <info@movievalley.com>
+    ONESIGNAL_API_KEY: test
+    ONESIGNAL_APP_ID: test
   script:
     - apt-get -qq update && apt-get install -y libssl-dev libicu-dev zlib1g-dev
     - swift package resolve
