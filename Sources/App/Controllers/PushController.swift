@@ -18,6 +18,7 @@ private extension PushController {
         var notification = OneSignalNotification(message: sendRequest.description)
         notification.title = OneSignalMessage(sendRequest.title)
         notification.externalUserIds = sendRequest.recipients.map { $0.uuidString }
+        notification.additionalData = sendRequest.additionalData
         return try oneSignal.send(notification: notification, toApp: oneSignalApp).map(to: HTTPStatus.self, { (result) -> HTTPStatus in
             switch result {
             case .success: return .ok
