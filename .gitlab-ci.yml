@@ -40,7 +40,7 @@ deploy-test:
   when: manual
   environment:
     name: test
-    url: api.test.whatscooking.app
+    url: https://api.test.whatscooking.app
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
@@ -54,3 +54,24 @@ deploy-test:
     - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e ONESIGNAL_API_KEY='$ONESIGNAL_API_KEY' -e ONESIGNAL_APP_ID='$ONESIGNAL_APP_ID' --net=internal $CI_REGISTRY_IMAGE && exit"
   only:
     - master
+
+stop-test:
+  stage: deploy
+  variables:
+    GIT_STRATEGY: none
+  before_script:
+    - apt-get update -qq
+    - apt-get install -qq git
+    # Setup SSH deploy keys
+    - 'which ssh-agent || ( apt-get install -qq openssh-client )'
+    - eval $(ssh-agent -s)
+    - ssh-add <(echo "$SSH_PRIVATE_KEY")
+    - mkdir -p ~/.ssh
+    - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
+  script:
+    - ssh root@$IP "docker stop $CI_PROJECT_NAME"
+  when: manual
+  environment:
+    name: test
+    action: stop
+
