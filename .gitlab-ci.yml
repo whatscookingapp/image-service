@@ -41,6 +41,7 @@ deploy-test:
   environment:
     name: test
     url: https://api.test.whatscooking.app
+    on_stop: stop-test
   before_script:
     - apt-get update -qq
     - apt-get install -qq git
