@@ -52,7 +52,7 @@ deploy-test:
     - mkdir -p ~/.ssh
     - '[[ -f /.dockerenv ]] && echo -e "Host *\n\tStrictHostKeyChecking no\n\n" > ~/.ssh/config'
   script:
-    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e ONESIGNAL_API_KEY='$ONESIGNAL_API_KEY' -e ONESIGNAL_APP_ID='$ONESIGNAL_APP_ID' --net=internal $CI_REGISTRY_IMAGE && exit"
+    - ssh root@$IP "docker pull $CI_REGISTRY_IMAGE:latest && docker stop $CI_PROJECT_NAME || true && docker rm $CI_PROJECT_NAME || true && docker run --name=$CI_PROJECT_NAME --restart=always -d --expose=8080 -e AWS_ACCESS_KEY=$AWS_ACCESS_KEY -e AWS_SECRET_KEY=$AWS_SECRET_KEY -e AWS_REGION=$AWS_REGION -e AWS_BUCKET=$AWS_BUCKET --net=internal $CI_REGISTRY_IMAGE && exit"
   only:
     - master
 
@@ -75,4 +75,3 @@ stop-test:
   environment:
     name: test
     action: stop
-
