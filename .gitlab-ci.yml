@@ -8,19 +8,19 @@ cache:
   paths:
     - .build
 
-# test:
-#   stage: test
-#   image: swift:5.0
-#   variables:
-#     ONESIGNAL_API_KEY: test
-#     ONESIGNAL_APP_ID: test
-#   script:
-#     - apt-get -qq update && apt-get install -y libssl-dev libicu-dev zlib1g-dev
-#     - swift package resolve
-#     - swift package clean
-#     - swift test
-#   tags:
-#     - docker
+test:
+  stage: test
+  image: swift:5.0
+  variables:
+    ONESIGNAL_API_KEY: test
+    ONESIGNAL_APP_ID: test
+  script:
+    - apt-get -qq update && apt-get install -y libssl-dev libicu-dev zlib1g-dev libgd-dev
+    - swift package resolve
+    - swift package clean
+    - swift test
+  tags:
+    - docker
 
 docker:image:
   stage: tag
