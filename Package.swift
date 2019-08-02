@@ -5,12 +5,13 @@ let package = Package(
     name: "image-service",
     dependencies: [
         .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
-        .package(url: "https://github.com/twostraws/SwiftGD.git", .upToNextMinor(from: "2.3.0")),
+        .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0"),
         .package(url: "https://github.com/vapor-community/vapor-ext.git", from: "0.3.0"),
         .package(url: "https://github.com/LiveUI/S3.git", from: "3.0.0-RC3.2"),
+        .package(url: "https://gitlab.com/jimmya92/oauthvalidator.git", .branch("master")),
     ],
     targets: [
-        .target(name: "App", dependencies: ["Vapor", "SwiftGD", "S3", "ServiceExt"]),
+        .target(name: "App", dependencies: ["Vapor", "FluentPostgreSQL", "S3", "ServiceExt", "OAuthValidator"]),
         .target(name: "Run", dependencies: ["App"]),
         .testTarget(name: "AppTests", dependencies: ["App"])
     ]

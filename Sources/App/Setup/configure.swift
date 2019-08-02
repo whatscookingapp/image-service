@@ -1,4 +1,5 @@
 import Vapor
+import FluentPostgreSQL
 import ServiceExt
 import S3
 
@@ -13,6 +14,8 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
         }
     }
     
+    try services.register(FluentPostgreSQLProvider())
+    
     services.register(Router.self) { container -> EngineRouter in
         let router = EngineRouter.default()
         try routes(router, container)
@@ -23,6 +26,18 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     var middlewaresConfig = MiddlewareConfig()
     try middlewares(config: &middlewaresConfig)
     services.register(middlewaresConfig)
+    
+    var databasesConfig = DatabasesConfig()
+    try databases(config: &databasesConfig)
+    services.register(databasesConfig)
+    
+    services.register { container -> MigrationConfig in
+        var migrationConfig = MigrationConfig()
+        try migrate(migrations: &migrationConfig)
+        return migrationConfig
+    }
+    
+    setupRepositories(services: &services, config: &config)
     
     /// S3
     guard let awsAccessKey: String = Environment.get("AWS_ACCESS_KEY"),
