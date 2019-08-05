@@ -6,14 +6,15 @@ struct ImageController: RouteCollection {
     func boot(router: Router) throws {
         let imagesRouter = router.grouped("images")
         
-        imagesRouter.post("", use: generateImage)
+        imagesRouter.post(ImageRequest.self, at: "", use: generateImage)
         imagesRouter.get(UUID.parameter, use: getImage)
     }
 }
 
 private extension ImageController {
     
-    func generateImage(_ req: Request) throws -> Future<CreateImageResponse> {
+    func generateImage(_ req: Request, request: ImageRequest) throws -> Future<CreateImageResponse> {
+        try request.validate()
         guard let bucket: String = Environment.get("AWS_BUCKET") else {
             throw Abort(.internalServerError)
         }
@@ -22,7 +23,7 @@ private extension ImageController {
         let s3 = try req.makeS3Client()
         let upload = File.Upload(data: Data(), destination: fileName, access: .publicRead)
         let url = try s3.url(fileInfo: upload, on: req)
-        let headers: [String: String] = ["x-amz-acl": AccessControlList.publicRead.rawValue]
+        let headers: [String: String] = ["x-amz-acl": AccessControlList.publicRead.rawValue, "Content-Length": "\(request.bytes)"]
         guard let presignedURL = try s3Signer.presignedURL(for: .PUT, url: url, expiration: .fifteenMinutes, region: nil, headers: headers) else {
             throw Abort(.internalServerError)
         }

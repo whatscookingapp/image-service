@@ -18,19 +18,3 @@ struct Image: PostgreSQLUUIDModel {
 }
 
 extension Image: Migration { }
-extension Image: Content { }
-
-extension Image {
-    
-    var thumbProcessReqeust: ProcessImageRequest {
-        return ProcessImageRequest(bucket: bucket, key: key, edits: ImageEdits(resize: ImageResize(width: 100, height: 100, fit: .cover)))
-    }
-    
-    var mediumProcessReqeust: ProcessImageRequest {
-        return ProcessImageRequest(bucket: bucket, key: key, edits: ImageEdits(resize: ImageResize(width: 250, height: nil, fit: .cover)))
-    }
-    
-    var largeProcessReqeust: ProcessImageRequest {
-        return ProcessImageRequest(bucket: bucket, key: key, edits: ImageEdits(resize: ImageResize(width: 500, height: nil, fit: .cover)))
-    }
-}
