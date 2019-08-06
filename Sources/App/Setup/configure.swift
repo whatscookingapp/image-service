@@ -2,6 +2,7 @@ import Vapor
 import FluentPostgreSQL
 import ServiceExt
 import S3
+import OAuthValidator
 
 public func configure(_ config: inout Config, _ env: inout Environment, _ services: inout Services) throws {
     
@@ -38,6 +39,10 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     }
     
     setupRepositories(services: &services, config: &config)
+    
+    services.register { container in
+        return UserIdCache()
+    }
     
     /// S3
     guard let awsAccessKey: String = Environment.get("AWS_ACCESS_KEY"),
