@@ -11,9 +11,8 @@ cache:
 test:
   stage: test
   image: swift:5.0
-  variables:
-    ONESIGNAL_API_KEY: test
-    ONESIGNAL_APP_ID: test
+  before_script:
+    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/food-sharing/scopes.git".insteadOf https://gitlab.com/food-sharing/scopes.git
   script:
     - apt-get -qq update && apt-get install -y libssl-dev libicu-dev zlib1g-dev libgd-dev
     - swift package resolve

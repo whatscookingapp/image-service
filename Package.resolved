@@ -2,15 +2,6 @@
   "object": {
     "pins": [
       {
-        "package": "Cgd",
-        "repositoryURL": "https://github.com/twostraws/Cgd.git",
-        "state": {
-          "branch": null,
-          "revision": "2e370814715c3557bb1cbdcd96e610ce29e83e45",
-          "version": "0.2.0"
-        }
-      },
-      {
         "package": "Console",
         "repositoryURL": "https://github.com/vapor/console.git",
         "state": {
@@ -96,7 +87,7 @@
         "repositoryURL": "https://gitlab.com/jimmya92/oauthcommon.git",
         "state": {
           "branch": "master",
-          "revision": "ecdcfb3bcf15190bed1445ccd637dc043b123ef5",
+          "revision": "8fd1408b4667790b917898f2c6719ccf5c60ec4c",
           "version": null
         }
       },
@@ -105,7 +96,7 @@
         "repositoryURL": "https://gitlab.com/jimmya92/oauthvalidator.git",
         "state": {
           "branch": "master",
-          "revision": "9268c0aa3840074a8995c68f08b8606008182be4",
+          "revision": "74efcc514527f0479c20bba83308e5c94a404a30",
           "version": null
         }
       },
@@ -134,6 +125,15 @@
           "branch": null,
           "revision": "48367b8256bcc71becf573f427973da5192a6845",
           "version": "3.0.0"
+        }
+      },
+      {
+        "package": "scopes",
+        "repositoryURL": "https://gitlab.com/food-sharing/scopes.git",
+        "state": {
+          "branch": "master",
+          "revision": "8ef7831d6942b119c8dae3cfb700c540593720f1",
+          "version": null
         }
       },
       {
@@ -188,15 +188,6 @@
           "branch": null,
           "revision": "37760e9a52030bb9011972c5213c3350fa9d41fd",
           "version": "1.0.0"
-        }
-      },
-      {
-        "package": "SwiftGD",
-        "repositoryURL": "https://github.com/twostraws/SwiftGD.git",
-        "state": {
-          "branch": null,
-          "revision": "2ff35042750fe581b71ff72a69693ce2a47f7863",
-          "version": "2.3.0"
         }
       },
       {
