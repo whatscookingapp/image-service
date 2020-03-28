@@ -1,20 +1,29 @@
+import Fluent
 import Vapor
-import FluentPostgreSQL
 
-struct Image: PostgreSQLUUIDModel {
+final class Image: Model, Content {
+    static let schema = "image"
     
-    static let createdAtKey: TimestampKey? = \Image.createdAt
-    
+    @ID(custom: "id", generatedBy: .random)
     var id: UUID?
+
+    @Field(key: "bucket")
     var bucket: String
-    var key: String
-    var createdAt: Date?
     
-    init(id: UUID? = nil, bucket: String, key: String) {
-        self.id = id
+    @Field(key: "key")
+    var key: String
+    
+    @Parent(key: "creator_id")
+    var creator: User
+    
+    @Timestamp(key: "created_at", on: .create)
+    var createdAt: Date?
+
+    init() { }
+
+    init(bucket: String, key: String, creatorID: UUID) {
         self.bucket = bucket
         self.key = key
+        self.$creator.id = creatorID
     }
 }
-
-extension Image: Migration { }

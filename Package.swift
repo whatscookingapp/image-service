@@ -1,19 +1,36 @@
-// swift-tools-version:5.0
+// swift-tools-version:5.2
 import PackageDescription
 
 let package = Package(
-    name: "image-service",
+    name: "app",
+    platforms: [
+       .macOS(.v10_15),
+    ],
+    products: [
+        .executable(name: "Run", targets: ["Run"]),
+        .library(name: "App", targets: ["App"]),
+    ],
     dependencies: [
-        .package(url: "https://github.com/vapor/vapor.git", from: "3.0.0"),
-        .package(url: "https://github.com/vapor/fluent-postgresql.git", from: "1.0.0"),
-        .package(url: "https://github.com/vapor-community/vapor-ext.git", from: "0.3.0"),
-        .package(url: "https://github.com/LiveUI/S3.git", from: "3.0.0-RC3.2"),
-        .package(url: "https://gitlab.com/jimmya92/oauthvalidator.git", .branch("master")),
-        .package(url: "https://gitlab.com/food-sharing/scopes.git", .branch("master")),
+        // 💧 A server-side Swift web framework.
+        .package(url: "https://github.com/vapor/vapor.git", from: "4.0.0-rc.1"),
+        .package(url: "https://github.com/vapor/fluent.git", from: "4.0.0-rc.1"),
+        .package(url: "https://github.com/vapor/fluent-postgres-driver.git", from: "2.0.0-rc.1"),
+        .package(url: "https://github.com/jimmya/S3.git", .branch("master"))
     ],
     targets: [
-        .target(name: "App", dependencies: ["Vapor", "FluentPostgreSQL", "S3", "ServiceExt", "OAuthValidator", "scopes"]),
-        .target(name: "Run", dependencies: ["App"]),
-        .testTarget(name: "AppTests", dependencies: ["App"])
+        .target(name: "App", dependencies: [
+            .product(name: "Fluent", package: "fluent"),
+            .product(name: "FluentPostgresDriver", package: "fluent-postgres-driver"),
+            .product(name: "Vapor", package: "vapor"),
+            .product(name: "S3Signer", package: "S3"),
+            .product(name: "S3Kit", package: "S3"),
+        ]),
+        .target(name: "Run", dependencies: [
+            .target(name: "App"),
+        ]),
+        .testTarget(name: "AppTests", dependencies: [
+            .target(name: "App"),
+            .product(name: "XCTVapor", package: "vapor"),
+        ])
     ]
 )

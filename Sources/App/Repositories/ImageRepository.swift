@@ -1,37 +1,19 @@
 import Vapor
-import FluentPostgreSQL
+import FluentPostgresDriver
 
-protocol ImageRepository: ServiceType {
-    func find(id: UUID, on connectable: DatabaseConnectable) -> Future<Image?>
-    func save(image: Image, on connectable: DatabaseConnectable) -> Future<Image>
+protocol ImageRepository {
+
+    func find(id: UUID, on req: Request) -> EventLoopFuture<Image?>
+    func save(image: Image, on req: Request) -> EventLoopFuture<Image>
 }
 
-final class PostgreImageRepository: ImageRepository {
+struct ImageRepositoryImpl: ImageRepository {
     
-    let database: PostgreSQLDatabase.ConnectionPool
-    
-    init(_ database: PostgreSQLDatabase.ConnectionPool) {
-        self.database = database
+    func find(id: UUID, on req: Request) -> EventLoopFuture<Image?> {
+        return Image.query(on: req.db).filter(\.$id == id).first()
     }
     
-    func find(id: UUID, on connectable: DatabaseConnectable) -> Future<Image?> {
-        return Image.query(on: connectable).filter(\.id == id).first()
+    func save(image: Image, on req: Request) -> EventLoopFuture<Image> {
+        return image.save(on: req.db).map { image }
     }
-    
-    func save(image: Image, on connectable: DatabaseConnectable) -> Future<Image> {
-        return image.save(on: connectable)
-    }
-}
-
-//MARK: - ServiceType conformance
-extension PostgreImageRepository {
-    static let serviceSupports: [Any.Type] = [ImageRepository.self]
-    
-    static func makeService(for worker: Container) throws -> Self {
-        return .init(try worker.connectionPool(to: .psql))
-    }
-}
-
-extension Database {
-    public typealias ConnectionPool = DatabaseConnectionPool<ConfiguredDatabase<Self>>
 }
