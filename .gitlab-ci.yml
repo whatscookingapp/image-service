@@ -1,5 +1,5 @@
 stages:
-  - test
+  # - test
   - tag
   - deploy
 
@@ -8,18 +8,29 @@ cache:
   paths:
     - .build
 
-test:
-  stage: test
-  image: swift:5.0
-  before_script:
-    - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/food-sharing/scopes.git".insteadOf https://gitlab.com/food-sharing/scopes.git
-  script:
-    - apt-get -qq update && apt-get install -y libssl-dev libicu-dev zlib1g-dev libgd-dev
-    - swift package resolve
-    - swift package clean
-    - swift test
-  tags:
-    - docker
+variables:
+  POSTGRES_DB: microservice
+  POSTGRES_USER: jimmy
+  POSTGRES_PASSWORD: password
+
+# test:
+#   stage: test
+#   image: swift:5.1
+#   variables:
+#     DATABASE_URL: postgresql://jimmy:password@postgres:5432/microservice 
+#     MAIL_HOST: http://localhost:8084
+#     BASE_URL: http://localhost:8082
+#   services:
+#     - postgres
+#   before_script:
+#     - git config --global url."https://gitlab-ci-token:${CI_JOB_TOKEN}@gitlab.com/food-sharing/scopes.git".insteadOf https://gitlab.com/food-sharing/scopes.git
+#   script:
+#     - apt-get -qq update && apt-get install -y libssl-dev libicu-dev zlib1g-dev
+#     - swift package resolve
+#     - swift package clean
+#     - swift test
+#   tags:
+#     - docker
 
 docker:image:
   stage: tag

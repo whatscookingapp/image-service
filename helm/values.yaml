@@ -15,6 +15,15 @@ fullnameOverride: ""
 service:
   type: ClusterIP
   port: 8080
+  annotations:
+    getambassador.io/config: |
+        ---
+        apiVersion: ambassador/v2
+        kind:  Mapping
+        name:  image-service
+        prefix: /images/
+        service: image-service:8080
+        rewrite: /images/
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

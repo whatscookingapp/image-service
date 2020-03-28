@@ -27,15 +27,20 @@ spec:
           - configMapRef:
               name: image-service-configmap
           env:
-            - name: DATABASE_URL
+            - name: DATABASE_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: postgres-url
-                  key: url
+                  name: postgres-credentials
+                  key: password
+            - name: DATABASE_CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: certificate
             - name: AWS_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: aws-secret
+                  name: aws-secret-key
                   key: secret
           ports:
             - name: http
