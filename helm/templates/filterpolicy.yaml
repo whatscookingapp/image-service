@@ -1,0 +1,11 @@
+apiVersion: getambassador.io/v2
+kind: FilterPolicy
+metadata:
+  name: image-service-policy
+  namespace: default
+spec:
+  rules:
+    - host: "*"
+      path: /images/
+      filters:
+        - name: authentication
