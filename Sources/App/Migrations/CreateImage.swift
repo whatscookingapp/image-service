@@ -3,7 +3,7 @@ import Fluent
 struct CreateImage: Migration {
     func prepare(on database: Database) -> EventLoopFuture<Void> {
         database.schema(Image.schema)
-            .field("id", .uuid, .required)
+            .id()
             .field("bucket", .string, .required)
             .field("key", .string, .required)
             .field("creator_id", .uuid, .references(User.schema, "id"))
