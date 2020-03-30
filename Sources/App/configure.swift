@@ -29,7 +29,9 @@ public func configure(_ app: Application) throws {
     // Configure migrations
     app.migrations.add(CreateImage())
     
-    try app.autoMigrate().wait()
+    if app.environment == .development {
+        try app.autoMigrate().wait()
+    }
     
     try routes(app)
 }
