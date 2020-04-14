@@ -63,9 +63,9 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
     - uses: actions/download-artifact@master
-        with:
-          name: SwiftPM artifacts
-          path: .build/
+      with:
+        name: SwiftPM artifacts
+        path: .build/
     - name: Build, Tag, Push
       uses: mattdavis0351/actions/docker-gpr@v1
       with:
