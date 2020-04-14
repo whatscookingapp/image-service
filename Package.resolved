@@ -20,6 +20,24 @@
         }
       },
       {
+        "package": "AWSSDKSwift",
+        "repositoryURL": "https://github.com/swift-aws/aws-sdk-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "baddfc4e750a961d7bb00fc6258541807b460ec1",
+          "version": "4.4.0"
+        }
+      },
+      {
+        "package": "AWSSDKSwiftCore",
+        "repositoryURL": "https://github.com/swift-aws/aws-sdk-swift-core.git",
+        "state": {
+          "branch": null,
+          "revision": "76502e37e04c94fd4da99ecb407cc7edbd371ed0",
+          "version": "4.3.1"
+        }
+      },
+      {
         "package": "console-kit",
         "repositoryURL": "https://github.com/vapor/console-kit.git",
         "state": {
@@ -56,6 +74,24 @@
         }
       },
       {
+        "package": "HypertextApplicationLanguage",
+        "repositoryURL": "https://github.com/swift-aws/HypertextApplicationLanguage.git",
+        "state": {
+          "branch": null,
+          "revision": "aa2c9141d491682f17b2310aed17b9adfc006256",
+          "version": "1.1.1"
+        }
+      },
+      {
+        "package": "INIParser",
+        "repositoryURL": "https://github.com/swift-aws/Perfect-INIParser.git",
+        "state": {
+          "branch": null,
+          "revision": "42de0efc7a01105e19b80d533d3d282a98277f6c",
+          "version": "3.0.3"
+        }
+      },
+      {
         "package": "postgres-kit",
         "repositoryURL": "https://github.com/vapor/postgres-kit.git",
         "state": {
@@ -80,15 +116,6 @@
           "branch": null,
           "revision": "35da702471cbcc308f58d38aa8fea971fa3fb166",
           "version": "4.0.0"
-        }
-      },
-      {
-        "package": "S3",
-        "repositoryURL": "https://github.com/jimmya/S3.git",
-        "state": {
-          "branch": "master",
-          "revision": "8ff5397f4b930012c74f4b6eeec83ec06ef8b17f",
-          "version": null
         }
       },
       {
@@ -173,6 +200,15 @@
         }
       },
       {
+        "package": "swift-nio-transport-services",
+        "repositoryURL": "https://github.com/apple/swift-nio-transport-services.git",
+        "state": {
+          "branch": null,
+          "revision": "85a67aea7caf5396ed599543dd23cffeb6dbbf96",
+          "version": "1.5.1"
+        }
+      },
+      {
         "package": "vapor",
         "repositoryURL": "https://github.com/vapor/vapor.git",
         "state": {
@@ -188,15 +224,6 @@
           "branch": null,
           "revision": "aac462481bcd3039d5db9a0fbe7f4e47eefe2295",
           "version": "2.0.0-rc.1"
-        }
-      },
-      {
-        "package": "XMLCoding",
-        "repositoryURL": "https://github.com/LiveUI/XMLCoding.git",
-        "state": {
-          "branch": null,
-          "revision": "f0fbfe17e73f329e13a6133ff5437f7b174049fd",
-          "version": "0.4.1"
         }
       }
     ]

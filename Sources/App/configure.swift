@@ -1,8 +1,7 @@
 import Fluent
 import FluentPostgresDriver
 import Vapor
-import S3Signer
-import S3Kit
+import S3
 
 // Called before your application initializes.
 public func configure(_ app: Application) throws {
@@ -25,7 +24,7 @@ public func configure(_ app: Application) throws {
     } else {
         throw Abort(.internalServerError, reason: "Database credentials not configured")
     }
-
+    
     // Configure migrations
     app.migrations.add(CreateImage())
     
@@ -38,20 +37,14 @@ public func configure(_ app: Application) throws {
 
 extension Application {
     
-    func makeS3() throws -> S3 {
-        guard let bucket = Environment.get("AWS_BUCKET") else {
-            throw Abort(.internalServerError, reason: "AWS not configured")
-        }
-        return try .init(defaultBucket: bucket, signer: try makeS3Signer())
-    }
-    
-    func makeS3Signer() throws -> S3Signer {
+    func makeS3Signer() throws -> Signers.V4 {
         guard let accessKey = Environment.get("AWS_ACCESS_KEY"),
             let secretKey = Environment.get("AWS_SECRET_KEY"),
-            let regionString = Environment.get("AWS_REGION") else {
+            let regionString = Environment.get("AWS_REGION"),
+            let region = Region(rawValue: regionString) else {
                 throw Abort(.internalServerError, reason: "AWS not configured")
         }
-        let region = Region(name: .init(regionString))
-        return try .init(.init(accessKey: accessKey, secretKey: secretKey, region: region))
+        let credential = Credential(accessKeyId: accessKey, secretAccessKey: secretKey)
+        return Signers.V4(credential: credential, region: region, signingName: "s3", endpoint: nil)
     }
 }
