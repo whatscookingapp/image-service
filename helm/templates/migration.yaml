@@ -1,0 +1,40 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: image-service-db-migrate
+  annotations:
+    "helm.sh/hook": pre-install,pre-upgrade
+    "helm.sh/hook-delete-policy": hook-succeeded
+spec:
+  activeDeadlineSeconds: 60
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: image-service-db-migrate
+          image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          envFrom:
+          - configMapRef:
+              name: image-service-configmap
+          env:
+            - name: DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: password
+            - name: DATABASE_CERTIFICATE
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-credentials
+                  key: certificate
+            - name: AWS_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: aws-secret-key
+                  key: secret
+          command:
+            - ./Run
+            - migrate
+      imagePullSecrets:
+        - name: gitlab-registry
