@@ -20,21 +20,12 @@
         }
       },
       {
-        "package": "AWSSDKSwift",
-        "repositoryURL": "https://github.com/swift-aws/aws-sdk-swift.git",
-        "state": {
-          "branch": null,
-          "revision": "baddfc4e750a961d7bb00fc6258541807b460ec1",
-          "version": "4.4.0"
-        }
-      },
-      {
-        "package": "AWSSDKSwiftCore",
+        "package": "aws-sdk-swift-core",
         "repositoryURL": "https://github.com/swift-aws/aws-sdk-swift-core.git",
         "state": {
           "branch": null,
-          "revision": "76502e37e04c94fd4da99ecb407cc7edbd371ed0",
-          "version": "4.3.1"
+          "revision": "4323a7731d5b50f6ab7314ff0649a2db64e1fe2a",
+          "version": "5.0.0-alpha.1"
         }
       },
       {
@@ -71,24 +62,6 @@
           "branch": null,
           "revision": "a7b7e341fe998ac1a20eac21962af934146a5de1",
           "version": "2.0.0-rc.1.1"
-        }
-      },
-      {
-        "package": "HypertextApplicationLanguage",
-        "repositoryURL": "https://github.com/swift-aws/HypertextApplicationLanguage.git",
-        "state": {
-          "branch": null,
-          "revision": "aa2c9141d491682f17b2310aed17b9adfc006256",
-          "version": "1.1.1"
-        }
-      },
-      {
-        "package": "INIParser",
-        "repositoryURL": "https://github.com/swift-aws/Perfect-INIParser.git",
-        "state": {
-          "branch": null,
-          "revision": "42de0efc7a01105e19b80d533d3d282a98277f6c",
-          "version": "3.0.3"
         }
       },
       {

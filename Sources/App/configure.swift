@@ -1,7 +1,7 @@
 import Fluent
 import FluentPostgresDriver
 import Vapor
-import S3
+import AWSSDKSwiftCore
 
 // Called before your application initializes.
 public func configure(_ app: Application) throws {
@@ -37,14 +37,14 @@ public func configure(_ app: Application) throws {
 
 extension Application {
     
-    func makeS3Signer() throws -> Signers.V4 {
+    func makeS3Signer() throws -> AWSSigner {
         guard let accessKey = Environment.get("AWS_ACCESS_KEY"),
             let secretKey = Environment.get("AWS_SECRET_KEY"),
             let regionString = Environment.get("AWS_REGION"),
             let region = Region(rawValue: regionString) else {
                 throw Abort(.internalServerError, reason: "AWS not configured")
         }
-        let credential = Credential(accessKeyId: accessKey, secretAccessKey: secretKey)
-        return Signers.V4(credential: credential, region: region, signingName: "s3", endpoint: nil)
+        let credential = StaticCredential(accessKeyId: accessKey, secretAccessKey: secretKey)
+        return AWSSigner(credentials: credential, name: "s3", region: region.rawValue)
     }
 }

@@ -1,6 +1,4 @@
 import Vapor
-import S3Signer
-import S3Kit
 
 struct ImageController: RouteCollection {
     
@@ -44,7 +42,7 @@ private extension ImageController {
         guard let url = URL(string: "https://s3.\(region).amazonaws.com/\(bucket)/\(fileName)") else {
             throw Abort(.internalServerError)
         }
-        let signedURL = signer.signedURL(url: url, method: "PUT", expires: 60 * 15)
+        let signedURL = signer.signURL(url: url, method: .PUT, expires: 60 * 15)
         let image = Image(bucket: bucket, key: fileName, creatorID: userID)
         return imageRepository.save(image: image, on: req).flatMapThrowing { image in
             return CreateImageResponse(id: try image.requireID(), url: signedURL)
