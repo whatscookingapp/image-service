@@ -50,7 +50,7 @@ docker:image:
 deploy-prod:
   stage: deploy
   when: manual
-  image: movievalley/k8s-helm-doctl:0.0.2
+  image: henry40408/doctl-kubectl:v2.0.1
   environment:
     name: prod
     url: https://api.whatscooking.app
@@ -58,14 +58,9 @@ deploy-prod:
   before_script:
     - doctl auth init -t $DO_TOKEN
     - doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
-    - helm init --client-only
-    - helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-    - helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-    - helm repo update
   script:
     - cd helm
-    - export DEPLOYS=$(helm ls | grep $CI_PROJECT_NAME | wc -l)
-    - if [ ${DEPLOYS}  -eq 0 ]; then helm install --name=$CI_PROJECT_NAME . --set=image.tag=$CI_COMMIT_SHORT_SHA; else helm upgrade $CI_PROJECT_NAME . --set=image.tag=$CI_COMMIT_SHORT_SHA; fi
+    - helm install --name=$CI_PROJECT_NAME . --set=image.tag=$CI_COMMIT_SHORT_SHA
   only:
     - master
 
@@ -75,12 +70,8 @@ stop-prod:
   before_script:
     - doctl auth init -t $DO_TOKEN
     - doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
-    - helm init --client-only
-    - helm repo add stable https://kubernetes-charts.storage.googleapis.com/
-    - helm repo add incubator https://kubernetes-charts-incubator.storage.googleapis.com/
-    - helm repo update
   script:
-    - helm del --purge $CI_PROJECT_NAME
+    - helm del $CI_PROJECT_NAME
   when: manual
   environment:
     name: prod
