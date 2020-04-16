@@ -4,6 +4,9 @@ on: [push]
 
 jobs:
   tag:
+    runs-on: ubuntu-latest
+    name: tag
+
     steps:
     - name: Checkout
       uses: actions/checkout@v1
