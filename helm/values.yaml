@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: registry.gitlab.com/food-sharing/image-service
+  repository: docker.pkg.github.com/whatscookingapp/image-service/image-service
   tag: latest
   pullPolicy: IfNotPresent
 
