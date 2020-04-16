@@ -7,7 +7,7 @@ replicaCount: 1
 image:
   repository: registry.gitlab.com/food-sharing/image-service
   tag: latest
-  pullPolicy: Always
+  pullPolicy: IfNotPresent
 
 nameOverride: ""
 fullnameOverride: ""
