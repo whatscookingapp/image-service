@@ -21,7 +21,7 @@ jobs:
       run: docker build -t $(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7) .
       
     - name: Push image to Docker Hub
-      run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)
+      run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7)
   deploy:
     runs-on: ubuntu-latest
     container: dtzar/helm-kubectl:2.16.1
