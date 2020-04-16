@@ -11,13 +11,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v1
 
-    - name: Build container image
-      run: docker build -t $(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7) .
-
     - name: Docker Login
       env:
-        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-      run: docker login docker.pkg.github.com -u $(echo $GITHUB_ACTOR) -p $DOCKER_PASSWORD
+        DOCKER_USERNAME: $GITHUB_ACTOR
+        DOCKER_PASSWORD: ${{ secrets.GITHUB_TOKEN }}
+      run: docker login docker.pkg.github.com -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
+
+    - name: Build container image
+      run: docker build -t $(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7) .
       
     - name: Push image to Docker Hub
       run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)
