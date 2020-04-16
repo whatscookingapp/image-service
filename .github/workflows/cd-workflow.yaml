@@ -70,5 +70,5 @@ jobs:
     - name: 'Deploy'
       run: |
         cd helm
-        helm upgrade ---kubeconfig $GITHUB_WORKSPACE/.kubeconfig -install image-service . --set=image.tag=b15
+        helm upgrade --kubeconfig $GITHUB_WORKSPACE/.kubeconfig --install image-service . --set=image.tag=b15
 
