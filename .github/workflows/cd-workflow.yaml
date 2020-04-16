@@ -10,15 +10,17 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v1
-    - name: Build, Tag, Publish Docker
-      uses: HurricanKai/Publish-Docker-Github-Action@1.12.1
+
+    - name: Build container image
+      run: docker build -t $(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7) .
+
+    - name: Docker Login
       env:
-        GITHUB_TAG: $GITHUB_SHA
-      with:
-        name: myDocker/repository
-        username: ${{ secrets.DOCKER_USERNAME }}
-        password: ${{ secrets.DOCKER_PASSWORD }}
-        tagging: true
+        DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      run: docker login docker.pkg.github.com -u $(echo $GITHUB_ACTOR) -p $DOCKER_PASSWORD
+      
+    - name: Push image to Docker Hub
+      run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)
   deploy:
     runs-on: ubuntu-latest
     container: dtzar/helm-kubectl:2.16.1
