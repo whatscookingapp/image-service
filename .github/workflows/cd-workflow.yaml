@@ -18,10 +18,10 @@ jobs:
       run: echo $DOCKER_PASSWORD | docker login docker.pkg.github.com -u $DOCKER_USERNAME --password-stdin
 
     - name: Build container image
-      run: docker build -t docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)/image-service:$(echo $GITHUB_SHA | head -c7) .
+      run: docker build -t docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)/image-service:$(echo ${GITHUB_SHA::8} | head -c7) .
       
     - name: Push image to Docker Hub
-      run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)/image-service:$(echo $GITHUB_SHA | head -c7)
+      run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY)/image-service:$(echo ${GITHUB_SHA::8} | head -c7)
   deploy:
     runs-on: ubuntu-latest
     container: dtzar/helm-kubectl:2.16.1
