@@ -59,6 +59,8 @@ jobs:
     # needs: tag
 
     steps:
+    - name: Checkout
+      uses: actions/checkout@v1
     - name: Save DigitalOcean kubeconfig
       uses: digitalocean/action-doctl@v1
       env:
