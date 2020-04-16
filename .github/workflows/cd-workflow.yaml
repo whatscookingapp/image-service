@@ -40,9 +40,9 @@ jobs:
   #       npm test
   #     env:
   #       CI: true
-  Build-and-Push-Docker-Image:
+  tag:
     runs-on: ubuntu-latest
-    name: Docker Build, Tag, Push
+    name: tag
 
     steps:
     - name: Checkout
@@ -52,9 +52,10 @@ jobs:
       with:
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         image-name: image-service
-  Deploy:
+  deploy:
     runs-on: ubuntu-latest
     name: Deploy
+    needs: tag
 
     steps:
     - name: Save DigitalOcean kubeconfig
