@@ -54,7 +54,7 @@ jobs:
   #       image-name: image-service
   deploy:
     runs-on: ubuntu-latest
-    container: dtzar/helm-kubectl
+    container: dtzar/helm-kubectl:2.16.1
     name: Deploy
     # needs: tag
 
