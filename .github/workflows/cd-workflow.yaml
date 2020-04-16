@@ -69,6 +69,6 @@ jobs:
         args: kubernetes cluster kubeconfig show k8s-1-16-2-do-3-ams3-1579807618969 > $GITHUB_WORKSPACE/.kubeconfig
     - name: 'Deploy'
       run: |
-        cd helm
+        cd helm;
         helm upgrade --install image-service . --set=image.tag=b15
 
