@@ -47,14 +47,14 @@ docker:image:
     - docker push $CI_REGISTRY_IMAGE:latest
     - docker push $CI_REGISTRY_IMAGE:$CI_COMMIT_SHORT_SHA
 
-deploy-test:
+deploy-prod:
   stage: deploy
   when: manual
   image: movievalley/k8s-helm-doctl:0.0.2
   environment:
-    name: test
-    url: https://api.test.whatscooking.app
-    on_stop: stop-test
+    name: prod
+    url: https://api.whatscooking.app
+    on_stop: stop-prod
   before_script:
     - doctl auth init -t $DO_TOKEN
     - doctl kubernetes cluster kubeconfig save $CLUSTER_NAME
@@ -65,11 +65,11 @@ deploy-test:
   script:
     - cd helm
     - export DEPLOYS=$(helm ls | grep $CI_PROJECT_NAME | wc -l)
-    - if [ ${DEPLOYS}  -eq 0 ]; then helm install --name=$CI_PROJECT_NAME . --namespace=$TEST_NAMESPACE --set=image.tag=$CI_COMMIT_SHORT_SHA; else helm upgrade $CI_PROJECT_NAME . --namespace=$TEST_NAMESPACE --set=image.tag=$CI_COMMIT_SHORT_SHA; fi
+    - if [ ${DEPLOYS}  -eq 0 ]; then helm install --name=$CI_PROJECT_NAME . --set=image.tag=$CI_COMMIT_SHORT_SHA; else helm upgrade $CI_PROJECT_NAME . --set=image.tag=$CI_COMMIT_SHORT_SHA; fi
   only:
     - master
 
-stop-test:
+stop-prod:
   stage: deploy
   image: movievalley/k8s-helm-doctl:0.0.2
   before_script:
@@ -83,5 +83,5 @@ stop-test:
     - helm del --purge $CI_PROJECT_NAME
   when: manual
   environment:
-    name: test
+    name: prod
     action: stop
