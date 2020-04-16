@@ -18,7 +18,7 @@ jobs:
       run: echo $DOCKER_PASSWORD | docker login docker.pkg.github.com -u $DOCKER_USERNAME --password-stdin
 
     - name: Build container image
-      run: docker build -t $(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7) .
+      run: docker build -t docker.pkg.github.com/$(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7) .
       
     - name: Push image to Docker Hub
       run: docker push docker.pkg.github.com/$(echo $GITHUB_REPOSITORY):$(echo $GITHUB_SHA | head -c7)
