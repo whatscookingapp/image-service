@@ -54,6 +54,7 @@ jobs:
   #       image-name: image-service
   deploy:
     runs-on: ubuntu-latest
+    container: dtzar/helm-kubectl
     name: Deploy
     # needs: tag
 
@@ -65,12 +66,7 @@ jobs:
       with:
         args: kubernetes cluster kubeconfig show k8s-1-16-2-do-3-ams3-1579807618969 > $GITHUB_WORKSPACE/.kubeconfig
     - name: 'Deploy'
-      uses: 'deliverybot/helm@v1'
-      with:
-        release: 'image-service'
-        namespace: 'default'
-        chart: 'helm'
-        token: '${{ github.token }}'
-      env:
-        KUBECONFIG_FILE: '$GITHUB_WORKSPACE/.kubeconfig'
+      run: |
+        cd helm
+        helm upgrade --install image-service . --set=image.tag=b15
 
